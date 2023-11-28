@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const BASE_URL = "https://jsonplaceholder.typicode.com/posts";
+// const BASE_URL = "https://jsonplaceholder.typicode.com/posts";
+const BASE_URL = "http://localhost:8000/sensors";
 
 const initialState = {
   sensors: [],
@@ -48,6 +49,7 @@ const sensorsSlice = createSlice({
       });
     },
     deleteItem: (state, action) => {
+      console.log("Sensor deleted from State");
       state.sensors = state.sensors.filter(
         (element) => element.id !== action.payload.id
       );
@@ -56,7 +58,8 @@ const sensorsSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(fetchSensors.fulfilled, (state, action) => {
       state.status = "succeeded";
-      state.sensors = state.sensors.concat(action.payload);
+      // state.sensors = state.sensors.concat(action.payload);
+      state.sensors = action.payload;
     });
   },
 });
