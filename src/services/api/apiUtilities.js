@@ -106,7 +106,7 @@ export class ApiUtilities {
    * @param {string} id
    * @returns {obj} result/error
    */
-  async delete(token, id) {
+  async delete(id) {
     let config = {
       method: "delete",
       maxBodyLength: Infinity,
