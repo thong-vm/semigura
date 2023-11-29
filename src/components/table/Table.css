@@ -1,0 +1,26 @@
+.table_wrapper {
+}
+
+table.main_table {
+  width: 100%;
+  border: 1px solid #616366;
+}
+
+.main_table th {
+  background-color: #5e7585;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  width: auto;
+  border-bottom: none !important;
+  white-space: nowrap;
+}
+
+/* chưa hoạt động */
+.main_table th td {
+    border: 1px solid #616366;
+}
+
+.tablerow_no {
+  text-align: center;
+}

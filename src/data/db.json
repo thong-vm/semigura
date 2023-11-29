@@ -1,0 +1,125 @@
+{
+  "sensors": [
+    {
+        "id": "1057192bbbdaf0000b8f28cd294d7929",
+        "code": "1749876016",
+        "name": "NAME-QXTT",
+        "type": 2,
+        "factory": "FACTORY-HLHC",
+        "tank": "TANK-SXCV"
+    },
+    {
+        "id": "2b3a8c59e9cb4b4c9a1f3091687d3c7d",
+        "code": "3984725190",
+        "name": "NAME-WXYZ",
+        "type": 1,
+        "factory": "FACTORY-ABCD",
+        "tank": "LOT-T316"
+    },
+    {
+        "id": "8d71f35f609f40ac88d8d1c4d2a75e2a",
+        "code": "6538172945",
+        "name": "NAME-UVWX",
+        "type": 4,
+        "factory": "FACTORY-EFGH",
+        "tank": "LOCATION-P12"
+    },
+    {
+        "id": "4b8a1a23f48e42f1a7bd7e907e0d5fd3",
+        "code": "7192836450",
+        "name": "NAME-ABCD",
+        "type": 3,
+        "factory": "FACTORY-UVWX",
+        "tank": "TANK-IJKL"
+    },
+    {
+        "id": "cfc83e556a5e4ea98d6daa5c20e0a51d",
+        "code": "5678901234",
+        "name": "NAME-EFGH",
+        "type": 2,
+        "factory": "FACTORY-QRST",
+        "tank": "TANK-5678"
+    },
+    {
+        "id": "da36c48bb4b94799b8b9b50debe6c635",
+        "code": "1234567890",
+        "name": "NAME-1234",
+        "type": 1,
+        "factory": "FACTORY-IJKL",
+        "tank": "LOT-T123"
+    },
+    {
+        "id": "85a5e80b4f2d46ec86939dfc3f2a3037",
+        "code": "0987654321",
+        "name": "NAME-IJKL",
+        "type": 4,
+        "factory": "FACTORY-WXYZ",
+        "tank": "LOCATION-P34"
+    },
+    {
+        "id": "627c6ef9ee0a47f6ae66da1a43d796a7",
+        "code": "5432109876",
+        "name": "NAME-QRST",
+        "type": 3,
+        "factory": "FACTORY-UVWX",
+        "tank": "TANK-ABCD"
+    },
+    {
+        "id": "e7e80f4c199941c59857d9a8490b7215",
+        "code": "1357924680",
+        "name": "NAME-WXYZ",
+        "type": 2,
+        "factory": "FACTORY-HLHC",
+        "tank": "TANK-SXCV"
+    },
+    {
+        "id": "3194a68c697a402cbce2906e76ac935c",
+        "code": "2468013579",
+        "name": "NAME-PQRS",
+        "type": 1,
+        "factory": "FACTORY-ABCD",
+        "tank": "LOT-T456"
+    },
+    {
+        "id": "d2c67661f238487ab82e3c898f759267",
+        "code": "9876543210",
+        "name": "NAME-EFGH",
+        "type": 4,
+        "factory": "FACTORY-IJKL",
+        "tank": "LOCATION-P56"
+    },
+    {
+        "id": "b8c8737c0791475295f35ec22b9ed032",
+        "code": "0123456789",
+        "name": "NAME-UVWX",
+        "type": 3,
+        "factory": "FACTORY-WXYZ",
+        "tank": "TANK-7890"
+    },
+    {
+        "id": "1e9dd3f5102d4b648b9f2f7e6cf510e8",
+        "code": "9870123456",
+        "name": "NAME-IJKL",
+        "type": 2,
+        "factory": "FACTORY-QRST",
+        "tank": "TANK-1234"
+    },
+    {
+        "id": "fb98293a117545a6967b8f442d01a019",
+        "code": "5432109876",
+        "name": "NAME-WXYZ",
+        "type": 1,
+        "factory": "FACTORY-UVWX",
+        "tank": "LOT-T789"
+    },
+    {
+        "id": "3f6f20cc11a9416496868a1a05b7b062",
+        "code": "0123456789",
+        "name": "NAME-5678",
+        "type": 3,
+        "factory": "FACTORY-HLHC",
+        "tank": "TANK-SXCV"
+    }
+]
+
+}
