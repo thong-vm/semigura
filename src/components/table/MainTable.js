@@ -1,21 +1,13 @@
 import React from "react";
 import "./Table.css";
-
+import TableHead from "./TableHead";
 
 const MainTable = ({ columnNames, data }) => {
   return (
     <div className="container table_wrapper">
-      {/* Table Head */}
       <table className="main_table">
-        <thead>
-          <tr>
-            <th>No.</th>
-            {columnNames.map((column, index) => (
-              <th key={index}>{column.toUpperCase()}</th>
-            ))}
-            <th>Actions</th>
-          </tr>
-        </thead>
+        {/* Table Head */}
+        <TableHead columns={columnNames} />
         {/* Table Body */}
         <tbody>
           {data.map((dataRow, rowIndex) => (

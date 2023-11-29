@@ -12,8 +12,7 @@ import getListColumnsExcludeId from "../../utils/GetColumnNamesExcludeId";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import "./Sensor.css";
-import "../../components/Table/Table.css"
-import MainTable from "../../components/Table/MainTable";
+import "../../components/table/Table.css"
 
 function Sensor() {
   const [show, setShow] = useState(false);
@@ -62,8 +61,8 @@ function Sensor() {
   return (
     <>
       <div className="container table_wrapper">
-        {/* Table Head */}
         <table className="main_table">
+          {/* Table Head */}
           <thead>
             <tr>
               <th>No.</th>
@@ -96,7 +95,6 @@ function Sensor() {
           </tbody>
         </table>
       </div>
-      {/* <MainTable columnNames={columns} data={listSensors}/> */}
       {/* Delete Confirmation Modal */}
       <Modal show={show} onHide={handleCloseModal}>
         <Modal.Header closeButton>
@@ -112,24 +110,6 @@ function Sensor() {
           </Button>
         </Modal.Footer>
       </Modal>
-      {/* <div>
-        id: <input type="text" />
-        title: <input type="text" />
-        <button onClick={() => handleAdd()}>Add</button>
-      </div>
-      <div>
-        id: <input type="text" />
-        title: <input type="text" />
-        <button onClick={() => handleUpdate()}>Update</button>
-      </div>
-      <div>
-        id: <input type="text" />
-        title: <input type="text" />
-        <button onClick={() => handleDelete()}>Delete</button>
-      </div>
-      {sensors.map((x, i) => (
-        <div key={i}>{JSON.stringify(x)}</div>
-      ))} */}
     </>
   );
 }
