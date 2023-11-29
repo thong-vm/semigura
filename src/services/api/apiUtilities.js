@@ -1,105 +1,117 @@
-import { retryAxios } from "../components/retry/axiosRetry";
-import { GRAPHQL_URL, REST_API } from "../constants/api";
-export async function requestG(config) {
-  config.url = GRAPHQL_URL;
-  return await requestApi(config);
-}
-export async function requestApi(config) {
-  try {
-    var { status, statusText, data } = await retryAxios.request(config);
-    if (status === 200 || status === 201) {
-      return { result: data };
-    }
-    return { error: `${status}: ${statusText}` };
-  } catch (ex) {
-    return { error: ex.message };
-  }
-}
-export class CommonApi {
+import { REST_API } from "../../constants/api";
+import LocalStorage from "../localStorage/localStorage";
+import { requestApi } from "./restApi";
+
+export class ApiUtilities {
   constructor(name) {
-    this.url = REST_API + `/` + name;
+    this.url = `${REST_API}/${name}`;
   }
 
+  headers() {
+    return {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + LocalStorage.get("token"),
+    };
+  }
+
+  /**
+   * デフォルトのオブジェクト
+   * @returns {obj}
+   */
   getDefault() {
     return {};
   }
 
+  /**
+   * 可読のデータに変更するコンバータを取得する
+   * @returns {key:{format(v){},parse(v){}}}
+   */
   getConverters() {
     return {};
   }
-
+  /**
+   * [enum]情報を保存する
+   * @returns {key:{label:value}}
+   */
   getEnums() {
     return {};
   }
-
+  /**
+   * テーブルの設定を取得する
+   * @returns [{w,l,k,r,hide}]
+   */
   getCols() {
     return [];
   }
 
-  async getAll(token) {
+  async getAll() {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
       url: this.url,
-      headers: {
-        Authorization: "Bearer " + token,
-      },
+      headers: this.headers(),
     };
-
     return await requestApi(config);
   }
 
-  async getOne(token, id) {
+  async getOne(id) {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: this.url + `/${id}`,
-      headers: {
-        Authorization: "Bearer " + token,
-      },
+      url: `${this.url}/${id}`,
+      headers: this.headers(),
     };
-
     return await requestApi(config);
   }
 
-  async patchOne(token, id, changes) {
+  /**
+   * IDでオブジェクトを編集する
+   * @param {string} token
+   * @param {string} id
+   * @param {obj} obj
+   * @returns {obj} result/error
+   */
+  async patchOne(id, obj) {
     let config = {
       method: "patch",
       maxBodyLength: Infinity,
-      url: this.url + `/${id}`,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      data: JSON.stringify(changes),
+      url: `${this.url}/${id}`,
+      headers: this.headers(),
+      data: JSON.stringify(obj),
     };
 
     return await requestApi(config);
   }
 
-  async postOne(token, newObj) {
+  /**
+   * オブジェクトを新規作成
+   * @param {string} token
+   * @returns {obj} result/error
+   */
+  async post(obj) {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
       url: this.url,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      data: JSON.stringify(newObj),
+      headers: this.headers(),
+      data: JSON.stringify(obj),
     };
 
     return await requestApi(config);
   }
 
-  async deleteOne(token, id) {
+  /**
+   * IDでオブジェクトを削除する
+   * @param {string} token
+   * @param {string} id
+   * @returns {obj} result/error
+   */
+  async delete(token, id) {
     let config = {
       method: "delete",
       maxBodyLength: Infinity,
       url: this.url + `/${id}`,
-      headers: {
-        Authorization: "Bearer " + token,
-      },
+      headers: this.headers(),
     };
 
     return await requestApi(config);
