@@ -1,4 +1,4 @@
-.container {
+.container-login {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -6,20 +6,52 @@
   height: 100vh;
   width: 100%;
   align-content: center;
+  margin-top: -1rem;
+}
+.container-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+.title {
+  font-weight: 500;
+  font-size: 30px;
+  color: #0067c0;
 }
 .container-form {
-  width: 20rem;
-  height: 10rem;
-  border-style: solid;
+  width: 30rem;
+  height: 20rem;
   border-radius: 20px;
-  padding: 0.5rem 2rem 0.5rem 2rem;
+  padding: 0.5rem 2rem 1rem 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+.container-checkbox {
+  margin-top: 0.9rem;
+}
+.form-container {
+  position: relative;
+  margin-top: 1.8rem;
+  margin-bottom: 0.4rem;
+}
+.input-error {
+  position: absolute;
+  color: red;
 }
 .form-input {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-top: 1rem;
+}
+.forgot-signup {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+.forgot-singup-link {
+  cursor: pointer;
 }

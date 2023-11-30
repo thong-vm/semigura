@@ -2,11 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { retryAxios } from "../../retry/axiosRetry";
 import { FAILED, IDLE, LOADING, SUCCEEDED } from "../../constants/store";
+import LocalStorage from "../../services/localStorage/localStorage";
 const initialState = {
   token: "",
   user: {},
   status: IDLE,
-  error: "",
+  error: ""
 };
 
 export const loginAsync = createAsyncThunk("auth/loginAsync", async (value) => {
@@ -39,6 +40,7 @@ export const authSlice = createSlice({
     logout: (state) => {
       state.token = "";
       state.user = {};
+      LocalStorage.remove("token");
     },
   },
   extraReducers: (builder) => {
@@ -48,7 +50,9 @@ export const authSlice = createSlice({
       })
       .addCase(loginAsync.fulfilled, (state, action) => {
         state.status = SUCCEEDED;
-        state.token = action.payload.token;
+        const token = action.payload.token;
+        state.token = token;
+        LocalStorage.set("token", token);
       })
       .addCase(loginAsync.rejected, (state, action) => {
         state.status = FAILED;
