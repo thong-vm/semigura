@@ -31,7 +31,7 @@
     "start": "react-scripts start",
     "dev": "env-cmd -f .env.development react-scripts start",
     "build": "react-scripts build",
-    "test": "env-cmd -f .env.development react-scripts test",
+    "test": "env-cmd -f .env.development react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
