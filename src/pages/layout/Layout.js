@@ -6,10 +6,11 @@ import {
 } from "react-router-dom";
 import Home from "../home/Home";
 import Sensor from "../sensor/Sensor";
-import "./Layout.css";
+import Sidebar from "../../components/sidebar/Sidebar";
 import { useEffect, useState } from "react";
 import LocalStorage from "../../services/localStorage/localStorage";
 import * as ROUTES from "../../constants/routes";
+import "./Layout.css";
 function Layout() {
   const navigate = useNavigate();
   const [isTokenValid, setTokenValid] = useState(false);
@@ -18,16 +19,10 @@ function Layout() {
     return !token || token === "";
   };
 
-  const logout = () => {
-    LocalStorage.clear();
-    setTokenValid(false);
-    navigate("/login");
-  };
-
   useEffect(() => {
     const checkToken = async () => {
       if (isTokenExpired(await token)) {
-        navigate("/login");
+        navigate(ROUTES.LOGIN);
       } else {
         setTokenValid(true);
       }
@@ -39,29 +34,20 @@ function Layout() {
   return (
     <>
       {isTokenValid && (
-        <>
-          <div>
-            header here !
-            <button
-              onClick={() => {
-                logout();
-              }}
-            >
-              logout
-            </button>
+        <div className="layout">
+          <div className="layout-sidebar">
+            <Sidebar />
           </div>
-          <div className="layout">
-            <div>sidebar here !</div>
-            <div className="layout-main">
-              <Routes>
-                <Route path={ROUTES.LAYOUT_MAIN} element={<Home />} />
-                <Route path={ROUTES.HOME} element={<Home />} />
-                <Route path={ROUTES.SENSOR} element={<Sensor />} />
-              </Routes>
-            </div>
+          <div className="layout-main">
+            <div>header here !</div>
+            <Routes>
+              <Route path={ROUTES.LAYOUT_MAIN} element={<Home />} />
+              <Route path={ROUTES.HOME} element={<Home />} />
+              <Route path={ROUTES.SENSOR} element={<Sensor />} />
+            </Routes>
+            <div>footer here !</div>
           </div>
-          <div>footer here !</div>
-        </>
+        </div>
       )}
     </>
   );
