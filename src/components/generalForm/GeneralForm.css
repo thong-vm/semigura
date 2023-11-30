@@ -1,0 +1,48 @@
+.general-form-container-main {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  margin-top: -1rem;
+}
+.general-form-container-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+.general-form-container-form {
+  width: 100%;
+  border-radius: 20px;
+  padding: 0.5rem 2rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.general-form-container-checkbox {
+  margin-top: 1.5rem;
+}
+.general-form-container-checkbox label{
+    cursor: pointer;
+}
+.general-form-container-checkbox label:hover{
+    color: #0067c0;
+}
+.general-form-form-container {
+  position: relative;
+  margin-top: 1.8rem;
+  margin-bottom: 0.4rem;
+}
+.general-form-input-error {
+  position: absolute;
+  color: red;
+  margin-top: 2px;
+}
+.general-form-form-input {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+.general-form-submit-btn {
+  margin-top: 1.4rem;
+  width: 100%;
+}
