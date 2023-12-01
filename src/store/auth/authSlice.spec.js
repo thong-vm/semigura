@@ -1,4 +1,4 @@
-import authReducer, { login } from "./authSlice";
+import authReducer, { login, logout } from "./authSlice";
 import { IDLE } from "../../constants/store";
 
 describe("authSlice", () => {
@@ -24,5 +24,13 @@ describe("authSlice", () => {
     const actual = authReducer(initialState, login({ user, token }));
     expect(actual.user.username).toEqual(user.username);
     expect(actual.token).toEqual(token);
+  });
+  
+  it("should handle logout", () => {
+    const noneUser = {};
+    const noneToken = "";
+    const actual = authReducer(initialState, logout());
+    expect(actual.user).toEqual(noneUser);
+    expect(actual.token).toEqual(noneToken);
   });
 });
