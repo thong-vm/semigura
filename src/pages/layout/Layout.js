@@ -22,7 +22,7 @@ function Layout() {
   useEffect(() => {
     const checkToken = async () => {
       if (isTokenExpired(await token)) {
-        navigate(ROUTES.LOGIN);
+        navigate(ROUTES.LOGIN.PATH);
       } else {
         setTokenValid(true);
       }

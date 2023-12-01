@@ -5,6 +5,7 @@ describe("authSlice", () => {
   const initialState = {
     token: "",
     user: {},
+    role: "",
     status: IDLE,
     error: "",
   };
@@ -13,6 +14,7 @@ describe("authSlice", () => {
     expect(authReducer(undefined, { type: "unknown" })).toEqual({
       token: "",
       user: {},
+      role: "",
       status: IDLE,
       error: "",
     });
@@ -25,7 +27,7 @@ describe("authSlice", () => {
     expect(actual.user.username).toEqual(user.username);
     expect(actual.token).toEqual(token);
   });
-  
+
   it("should handle logout", () => {
     const noneUser = {};
     const noneToken = "";
