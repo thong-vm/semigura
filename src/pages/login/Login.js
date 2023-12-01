@@ -42,7 +42,7 @@ function Login() {
   useEffect(() => {
     if (status === SUCCEEDED && login) {
       setLogin(false);
-      navigate(ROUTES.HOME);
+      navigate(ROUTES.HOME.PATH);
     }
   }, [status, navigate, login]);
   return (

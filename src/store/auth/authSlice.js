@@ -3,42 +3,27 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { retryAxios } from "../../retry/axiosRetry";
 import { FAILED, IDLE, LOADING, SUCCEEDED } from "../../constants/store";
 import LocalStorage from "../../services/localStorage/localStorage";
+import { AuthLogin } from "../../services/api/auth/authApi";
 const initialState = {
   token: "",
   user: {},
   status: IDLE,
-  error: ""
+  error: "",
 };
 
 export const loginAsync = createAsyncThunk("auth/loginAsync", async (value) => {
-  const data = JSON.stringify({
+  const { result, error } = await AuthLogin.post({
     account: value.username,
     password: value.password,
   });
-
-  let config = {
-    method: "post",
-    maxBodyLength: Infinity,
-    url: process.env.REACT_APP_API + "/api/users/login",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: data,
-  };
-
-  const response = await retryAxios.request(config);
-  if (response.status !== 200) {
-    return { error: response.statusText };
-  }
-
-  return response?.data;
+  return !error ? result : console.log("AuthLogin: ", error);
 });
 export const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
   reducers: {
     login: (state, action) => {
-      var {user, token} = action.payload;
+      var { user, token } = action.payload;
       state.user.username = user.username;
       state.token = token;
       LocalStorage.set("token", token);

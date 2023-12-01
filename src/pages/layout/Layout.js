@@ -41,9 +41,9 @@ function Layout() {
           <div className="layout-main">
             <div>header here !</div>
             <Routes>
-              <Route path={ROUTES.LAYOUT_MAIN} element={<Home />} />
-              <Route path={ROUTES.HOME} element={<Home />} />
-              <Route path={ROUTES.SENSOR} element={<Sensor />} />
+              <Route path={ROUTES.LAYOUT_MAIN.PATH} element={<Home />} />
+              <Route path={ROUTES.HOME.PATH} element={<Home />} />
+              <Route path={ROUTES.SENSOR.PATH} element={<Sensor />} />
             </Routes>
             <div>footer here !</div>
           </div>

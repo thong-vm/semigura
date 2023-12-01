@@ -47,14 +47,7 @@ describe("sensorSlice", () => {
     factory: "FACTO1YAA1",
     tank: "TAN1AA2",
   };
-  const testDeleteSensorItem = {
-    id: "105c5364e79b2001243f71c6dc7b5a05",
-    code: "7230B1TES1",
-    name: "NAMEAAA",
-    type: 1,
-    factory: "FACTORYAAA",
-    tank: "TANKAAA",
-  };
+  const testDeleteSensorItemId = "105c5364e79b2001243f71c6dc7b5a05";
   const testDeleteSensors = [
     {
       id: "105c5364e79b2001243f71c6dc7b5a06",
@@ -97,18 +90,19 @@ describe("sensorSlice", () => {
     );
   });
 
-  it("should handle updateList", () => {
+  it("should handle update sensor", () => {
     const sensor = testUpdateSensorItem;
+    const id = sensor.id;
     initialState.sensors = testSensors;
-    const actual = sensorReducer(initialState, updateList(sensor));
+    const actual = sensorReducer(initialState, updateList({ id, sensor }));
     expect(actual.sensors.find((x) => x.id === sensor.id)).toEqual(sensor);
   });
-  
-  it("should handle deleteItem", () => {
-    const sensor = testDeleteSensorItem;
+
+  it("should handle delete sensor", () => {
+    const id = testDeleteSensorItemId;
     initialState.sensors = testSensors;
-    const actual = sensorReducer(initialState, deleteItem(sensor));
-    expect(actual.sensors.filter((x) => x.id !== sensor.id)).toEqual(
+    const actual = sensorReducer(initialState, deleteItem(id));
+    expect(actual.sensors.filter((x) => x.id !== id)).toEqual(
       testDeleteSensors
     );
   });

@@ -41,8 +41,9 @@ const sensorsSlice = createSlice({
     },
     updateList: (state, action) => {
       state.sensors = state.sensors.map((element) => {
-        if (element.id.toString() === action.payload.id.toString()) {
-          return action.payload;
+        var { id, sensor } = action.payload;
+        if (element.id.toString() === id.toString()) {
+          return sensor;
         } else {
           return element;
         }
@@ -50,9 +51,8 @@ const sensorsSlice = createSlice({
     },
     deleteItem: (state, action) => {
       console.log("Sensor deleted from State");
-      state.sensors = state.sensors.filter(
-        (element) => element.id !== action.payload.id
-      );
+      var { id } = action.payload;
+      state.sensors = state.sensors.filter((element) => element.id !== id);
     },
   },
   extraReducers(builder) {

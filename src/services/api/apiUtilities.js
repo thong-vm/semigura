@@ -96,7 +96,7 @@ export class ApiUtilities {
       headers: this.headers(),
       data: JSON.stringify(obj),
     };
-
+    console.log("📨 Sending to server request :", config);
     return await requestApi(config);
   }
 

@@ -22,6 +22,7 @@ import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import { sidebars } from "../../constants/sidebars";
 import { useNavigate } from "react-router-dom";
 import LocalStorage from "../../services/localStorage/localStorage";
+import * as ROUTES from "../../constants/routes";
 
 const C = {
   temporary: "temporary",
@@ -48,8 +49,8 @@ const theme = createTheme({
 });
 
 function Sidebar() {
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [expandState, setExpandState] = React.useState({});
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [expandState, setExpandState] = useState({});
   const [variant, setVariant] = useState(C.permanent);
   const navigate = useNavigate();
   const toggleDrawer = (open, sender) => {
@@ -76,7 +77,7 @@ function Sidebar() {
   };
   const onNavigate = (path, title) => {
     setDrawerOpen(false);
-    if (title === "Logout") {
+    if (title === ROUTES.LOGOUT.TITLE) {
       logout();
     }
     navigate(path);
@@ -86,11 +87,11 @@ function Sidebar() {
   };
 
   const renderItems = (list, lvl = 1) => {
-    return list.map((item, i) => {
+    return list.map((item, index) => {
       var { title, path, icon } = item;
       if (item.children) {
         return (
-          <div key={i}>
+          <div key={index}>
             <ListItemButton
               alignItems="flex-start"
               onClick={() => onExpandSw(title)}
@@ -143,7 +144,7 @@ function Sidebar() {
         );
       } else {
         return (
-          <ListItem key={title} disablePadding>
+          <ListItem key={`${title}-${index}`} disablePadding>
             <ListItemButton onClick={() => onNavigate(path, title)}>
               <ListItemIcon sx={{ color: "inherit" }}>{icon}</ListItemIcon>
               <ListItemText primary={title} />
