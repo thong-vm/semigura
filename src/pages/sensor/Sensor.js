@@ -5,37 +5,59 @@ import {
   fetchSensors,
   selectAllSensors,
   deleteItem,
+  addSensor,
   deleteSensor,
+  updateSensor,
 } from "../../store/sensor/sensorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import getListColumnsExcludeId from "../../utils/GetColumnNamesExcludeId";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
 import "./Sensor.css";
-import "../../components/table/Table.css"
+import "../../components/table/Table.css";
+import DeleteModal from "../../components/ui/DeleteModal";
+import TableRow from "../../components/table/TableRow";
+import TableRowAdd from "../../components/table/TableRowAdd";
 
 function Sensor() {
   const [show, setShow] = useState(false);
   const [activeId, setActiveId] = useState("");
   const dispatch = useDispatch();
   const listSensors = useSelector(selectAllSensors);
-  const columns = listSensors.length > 0 ? getListColumnsExcludeId(listSensors[0]) : [];
+  const columns =
+    listSensors.length > 0 ? getListColumnsExcludeId(listSensors[0]) : [];
 
-  const handleAdd = () => {
-    dispatch(addToList({ id: "1", title: "11" }));
+  const handleAdd = async (sensor) => {
+    try {
+      const addResult = await dispatch(addSensor(sensor));
+      if (addSensor.fulfilled.match(addResult)) {
+        console.log("Sensor added successfully: ", addResult.payload);
+        dispatch(addToList(addResult.payload));
+      } else {
+        console.error("Error adding sensor: ", addResult.payload);
+      }
+    } catch (error) {
+      console.error("Error dispatching addSensor action: ", error);
+    }
   };
-  const handleUpdate = () => {
-    dispatch(updateList({ id: "1", title: "22" }));
+  const handleUpdate = async (sensor) => {
+    console.log(sensor);
+    try {
+      const updateResult = await dispatch(updateSensor(sensor));
+      if (updateSensor.fulfilled.match(updateResult)) {
+        console.log("Sensor updated successfully: ", updateResult.payload);
+        dispatch(updateList(updateResult.payload));
+      } else {
+        console.error("Error updating sensor: ", updateResult.payload);
+      }
+    } catch (error) {
+      console.error("Error dispatching updateSensor action: ", error);
+    }
   };
   const handleDelete = async (id) => {
     handleCloseModal();
     try {
-      // Dispatch the deleteSensor action with the sensor data
       const deleteResult = await dispatch(deleteSensor({ id }));
-      // Check if the action was fulfilled
       if (deleteSensor.fulfilled.match(deleteResult)) {
         console.log("Sensor deleted successfully: ", deleteResult.payload);
-        // call for delete the item from Sensors state
         dispatch(deleteItem(deleteResult.payload));
       } else {
         console.error("Error deleting sensor: ", deleteResult.payload);
@@ -45,14 +67,13 @@ function Sensor() {
     }
   };
 
-
-  const handleCloseModal = () => setShow(false);
-  const handleShowModal = () => setShow(true);
-
-  const handleClickDeleteButton = (activeId) => {
+  const handleClickDelete = (activeId) => {
     handleShowModal();
     setActiveId(activeId);
   };
+  
+  const handleCloseModal = () => setShow(false);
+  const handleShowModal = () => setShow(true);
 
   useEffect(() => {
     dispatch(fetchSensors());
@@ -62,7 +83,6 @@ function Sensor() {
     <>
       <div className="container table_wrapper">
         <table className="main_table">
-          {/* Table Head */}
           <thead>
             <tr>
               <th>No.</th>
@@ -72,44 +92,26 @@ function Sensor() {
               <th>Actions</th>
             </tr>
           </thead>
-          {/* Table Body */}
           <tbody>
             {listSensors.map((dataRow, rowIndex) => (
-              <tr key={dataRow["id"]}>
-                {/* Column STT */}
-                <td className="tablerow_no">{rowIndex + 1}</td>
-                {/* Map out data by column key  */}
-                {columns.map((column, columnIndex) => (
-                  <td key={columnIndex}>{dataRow[column]}</td>
-                ))}
-                {/* Column Action: Delete */}
-                <td className="text-center">
-                  <button
-                    onClick={() => handleClickDeleteButton(dataRow["id"])}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+              <TableRow
+                key={dataRow.id}
+                index={rowIndex}
+                columns={columns}
+                data={dataRow}
+                handleUpdateOnBlur={handleUpdate}
+                handleClickDelete={handleClickDelete}
+              />
             ))}
+            <TableRowAdd columns={columns} onClickAdd={handleAdd} />
           </tbody>
         </table>
       </div>
-      {/* Delete Confirmation Modal */}
-      <Modal show={show} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Sensor?</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to delete this Sensor?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={() => handleDelete(activeId)}>
-            Delete
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <DeleteModal
+        show={show}
+        handleCloseModal={handleCloseModal}
+        onDeleteClick={() => handleDelete(activeId)}
+      />
     </>
   );
 }

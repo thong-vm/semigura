@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
-const InputCell = () => {
+const TableCellInput = ({ value }) => {
   return (
-    <div>
-        
-    </div>
-  )
-}
+    <td>
+      <input className="cell_input" type="text" defaultValue={value}></input>
+    </td>
+  );
+};
 
-export default InputCell
+export default TableCellInput;

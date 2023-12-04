@@ -3,7 +3,6 @@
 
 table.main_table {
   width: 100%;
-  border: 1px solid #616366;
 }
 
 .main_table th {
@@ -16,11 +15,17 @@ table.main_table {
   white-space: nowrap;
 }
 
-/* chưa hoạt động */
-.main_table th td {
+table, th, td {
     border: 1px solid #616366;
+    border-collapse: collapse;
 }
 
 .tablerow_no {
   text-align: center;
+}
+
+.cell-input {
+  width: 100%;
+  border: 0;
+  padding: 0.275rem;
 }

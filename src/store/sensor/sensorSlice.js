@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-// const BASE_URL = "https://jsonplaceholder.typicode.com/posts";
+import { FAILED, IDLE, LOADING, SUCCEEDED } from "../../constants/store";
 const BASE_URL = "http://localhost:8000/sensors";
 
 const initialState = {
   sensors: [],
+  status: IDLE,
+  error: "",
 };
 
 export const fetchSensors = createAsyncThunk(
@@ -13,6 +15,21 @@ export const fetchSensors = createAsyncThunk(
   async () => {
     const response = await axios.get(BASE_URL);
     return response?.data;
+  }
+);
+
+export const addSensor = createAsyncThunk(
+  "sensor/addSensor",
+  async (newSensor) => {
+    try {
+      const response = await axios.post(`${BASE_URL}`, newSensor);
+      if (response?.status === 201) {
+        return response.data;
+      }
+      return `${response.status} : ${response.statusText}`;
+    } catch (error) {
+      return error.message;
+    }
   }
 );
 
@@ -29,6 +46,21 @@ export const deleteSensor = createAsyncThunk(
     }
   }
 );
+
+export const updateSensor = createAsyncThunk(
+  "sensor/updateSensor",
+  async (updateSensor) => {
+    const { id, ...sensorData } = updateSensor;
+    try {
+      const response = await axios.put(`${BASE_URL}/${id}`, sensorData);
+      if (response?.status === 200) return updateSensor;
+      return `${response.status} : ${response.statusText}`;
+    } catch (error) {
+      return error.message;
+    }
+  }
+);
+
 const sensorsSlice = createSlice({
   name: "sensors",
   initialState,
@@ -37,7 +69,7 @@ const sensorsSlice = createSlice({
       state.sensors = action.payload;
     },
     addToList: (state, action) => {
-      state.sensors = [action.payload, ...state.sensors];
+      state.sensors = [...state.sensors, action.payload];
     },
     updateList: (state, action) => {
       state.sensors = state.sensors.map((element) => {
@@ -50,17 +82,23 @@ const sensorsSlice = createSlice({
       });
     },
     deleteItem: (state, action) => {
-      console.log("Sensor deleted from State");
       var { id } = action.payload;
       state.sensors = state.sensors.filter((element) => element.id !== id);
     },
   },
   extraReducers(builder) {
-    builder.addCase(fetchSensors.fulfilled, (state, action) => {
-      state.status = "succeeded";
-      // state.sensors = state.sensors.concat(action.payload);
-      state.sensors = action.payload;
-    });
+    builder
+      .addCase(fetchSensors.pending, (state) => {
+        state.status = LOADING;
+      })
+      .addCase(fetchSensors.fulfilled, (state, action) => {
+        state.status = SUCCEEDED;
+        state.sensors = action.payload;
+      })
+      .addCase(fetchSensors.rejected, (state, action) => {
+        state.status = FAILED;
+        state.error = action.error.message;
+      });
   },
 });
 export const { setList, addToList, updateList, deleteItem } =
