@@ -29,7 +29,7 @@ function Sensor() {
       const addResult = await dispatch(addSensor(sensor));
       if (addSensor.fulfilled.match(addResult)) {
         console.log("Sensor added successfully: ", addResult.payload);
-        dispatch(addToList(addResult.payload));
+        dispatch(addToList({sensor: addResult.payload}));
       } else {
         console.error("Error adding sensor: ", addResult.payload);
       }
@@ -42,7 +42,7 @@ function Sensor() {
       const updateResult = await dispatch(updateSensor(sensor));
       if (updateSensor.fulfilled.match(updateResult)) {
         console.log("Sensor updated successfully: ", updateResult.payload);
-        dispatch(updateList(updateResult.payload));
+        dispatch(updateList({sensor: updateResult.payload}));
       } else {
         console.error("Error updating sensor: ", updateResult.payload);
       }
@@ -56,7 +56,7 @@ function Sensor() {
       const deleteResult = await dispatch(deleteSensor({ id }));
       if (deleteSensor.fulfilled.match(deleteResult)) {
         console.log("Sensor deleted successfully: ", deleteResult.payload);
-        dispatch(deleteItem(deleteResult.payload));
+        dispatch(deleteItem({id: deleteResult.payload}));
       } else {
         console.error("Error deleting sensor: ", deleteResult.payload);
       }
