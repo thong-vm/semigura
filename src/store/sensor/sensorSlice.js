@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import Sensor from "../../pages/sensor/Sensor";
 import { FAILED, IDLE, LOADING, SUCCEEDED } from "../../constants/store";
 const BASE_URL = "http://localhost:8000/sensors";
 
@@ -13,8 +14,8 @@ const initialState = {
 export const fetchSensors = createAsyncThunk(
   "sensors/fetchSensors",
   async () => {
-    const response = await axios.get(BASE_URL);
-    return response?.data;
+    const { result, error } = await Sensor.getAll();
+    return !error ? result : console.log("Sensor.getAll: ", error);
   }
 );
 
@@ -66,15 +67,17 @@ const sensorsSlice = createSlice({
   initialState,
   reducers: {
     setList: (state, action) => {
-      state.sensors = action.payload;
+      var { sensors } = action.payload;
+      state.sensors = sensors;
     },
     addToList: (state, action) => {
-      state.sensors = [...state.sensors, action.payload];
+      var { sensor } = action.payload;
+      state.sensors = [...state.sensors, sensor];
     },
     updateList: (state, action) => {
+      var { sensor } = action.payload;
       state.sensors = state.sensors.map((element) => {
-        var { id, sensor } = action.payload;
-        if (element.id.toString() === id.toString()) {
+        if (element.id === sensor.id) {
           return sensor;
         } else {
           return element;

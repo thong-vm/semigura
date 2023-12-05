@@ -22,8 +22,7 @@ function Sensor() {
   const [activeId, setActiveId] = useState("");
   const dispatch = useDispatch();
   const listSensors = useSelector(selectAllSensors);
-  const columns =
-    listSensors.length > 0 ? getListColumnsExcludeId(listSensors[0]) : [];
+  const columns = listSensors.length > 0 ? getListColumnsExcludeId(listSensors[0]) : [];
 
   const handleAdd = async (sensor) => {
     try {
@@ -39,7 +38,6 @@ function Sensor() {
     }
   };
   const handleUpdate = async (sensor) => {
-    console.log(sensor);
     try {
       const updateResult = await dispatch(updateSensor(sensor));
       if (updateSensor.fulfilled.match(updateResult)) {
@@ -71,7 +69,7 @@ function Sensor() {
     handleShowModal();
     setActiveId(activeId);
   };
-  
+
   const handleCloseModal = () => setShow(false);
   const handleShowModal = () => setShow(true);
 
