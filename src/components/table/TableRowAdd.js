@@ -11,24 +11,21 @@ const TableRowAdd = ({ columns, onClickAdd }) => {
   });
 
   const updateValue = (column, value) => {
-    newSensor[column] = value;
+    const editSensor = {
+      ...newSensor,
+      [column]: value,
+    };
+    setNewSensor(editSensor);
   };
 
   const handleAdd = (newData) => {
     onClickAdd(newData);
-    setNewSensor({
-      code: "",
-      name: "",
-      type: null,
-      factory: "",
-      tank: "",
+    Object.keys(newSensor).forEach((key) => {
+      newSensor[key] = "";
     });
+  };
 
-  }
-
-  useEffect(() => {
-    
-  }, [newSensor]);
+  useEffect(() => {}, [newSensor]);
 
   return (
     <tr>
@@ -40,6 +37,7 @@ const TableRowAdd = ({ columns, onClickAdd }) => {
             type="text"
             placeholder={column}
             id={column}
+            value={newSensor[column]}
             onChange={(e) => updateValue(column, e.target.value)}
           ></input>
         </td>
