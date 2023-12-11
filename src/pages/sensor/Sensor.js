@@ -9,6 +9,7 @@ import {
   deleteSensor,
   updateSensor,
   setFilterSensor,
+  selectFilterSensors,
 } from "../../store/sensor/sensorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import getListColumnsExcludeId from "../../utils/GetColumnNamesExcludeId";
@@ -25,6 +26,7 @@ function Sensor() {
   const dispatch = useDispatch();
   const listSensors = useSelector(selectAllSensors);
   const columns = listSensors.length > 0 ? getListColumnsExcludeId(listSensors[0]) : [];
+  const listFilterSensors = useSelector(selectFilterSensors);
 
   const handleAdd = async (sensor) => {
     try {
@@ -73,7 +75,6 @@ function Sensor() {
   };
 
   const handleSearchForm = (data) => {
-    console.log(data);
     dispatch(setFilterSensor(data));
   }
 
@@ -83,6 +84,8 @@ function Sensor() {
   useEffect(() => {
     dispatch(fetchSensors());
   }, [dispatch]);
+
+  const Sensors = listFilterSensors.length > 0 ? listFilterSensors : listSensors;
 
   return (
     <>
@@ -101,7 +104,7 @@ function Sensor() {
             </tr>
           </thead>
           <tbody>
-            {listSensors.map((dataRow, rowIndex) => (
+            {Sensors.map((dataRow, rowIndex) => (
               <TableRow
                 key={dataRow.id}
                 index={rowIndex}

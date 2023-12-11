@@ -3,6 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import Sensor from "../../pages/sensor/Sensor";
 import { FAILED, IDLE, LOADING, SUCCEEDED } from "../../constants/store";
+import FilterObjectList from "../../utils/FilterObjectList";
 const BASE_URL = "http://localhost:8000/sensors";
 
 const initialState = {
@@ -15,9 +16,11 @@ const initialState = {
 export const fetchSensors = createAsyncThunk(
   "sensors/fetchSensors",
   async () => {
-    const { result, error } = await Sensor.getAll();
-    return !error ? result : console.log("Sensor.getAll: ", error);
-      }
+    // const { result, error } = await Sensor.getAll();
+    // return !error ? result : console.log("Sensor.getAll: ", error);
+    const response = await axios.get(BASE_URL);
+    return response?.data;
+  }
 );
 
 export const addSensor = createAsyncThunk(
@@ -111,8 +114,8 @@ const sensorsSlice = createSlice({
 });
 export const selectAllSensors = (state) => state.sensors.sensors;
 export const selectFilterSensors = (state) => {
-
-}
+  return FilterObjectList(state.sensors.sensors, state.sensors.filterSensor);
+};
 
 export const { setList, addToList, updateList, deleteItem, setFilterSensor } =
   sensorsSlice.actions;
