@@ -5,7 +5,7 @@ const TableRowAdd = ({ columns, onClickAdd }) => {
   const [newSensor, setNewSensor] = useState({
     code: "",
     name: "",
-    type: null,
+    type: "",
     factory: "",
     tank: "",
   });
@@ -25,7 +25,7 @@ const TableRowAdd = ({ columns, onClickAdd }) => {
     });
   };
 
-  useEffect(() => {}, [newSensor]);
+  // useEffect(() => {}, [newSensor]);
 
   return (
     <tr>

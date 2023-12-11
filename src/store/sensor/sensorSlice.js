@@ -7,6 +7,7 @@ const BASE_URL = "http://localhost:8000/sensors";
 
 const initialState = {
   sensors: [],
+  filterSensor: {},
   status: IDLE,
   error: "",
 };
@@ -16,7 +17,7 @@ export const fetchSensors = createAsyncThunk(
   async () => {
     const { result, error } = await Sensor.getAll();
     return !error ? result : console.log("Sensor.getAll: ", error);
-  }
+      }
 );
 
 export const addSensor = createAsyncThunk(
@@ -88,6 +89,10 @@ const sensorsSlice = createSlice({
       var { id } = action.payload;
       state.sensors = state.sensors.filter((element) => element.id !== id);
     },
+    setFilterSensor: (state, action) => {
+      var sensor = action.payload;
+      state.filterSensor = sensor;
+    },
   },
   extraReducers(builder) {
     builder
@@ -104,7 +109,11 @@ const sensorsSlice = createSlice({
       });
   },
 });
-export const { setList, addToList, updateList, deleteItem } =
-  sensorsSlice.actions;
 export const selectAllSensors = (state) => state.sensors.sensors;
+export const selectFilterSensors = (state) => {
+
+}
+
+export const { setList, addToList, updateList, deleteItem, setFilterSensor } =
+  sensorsSlice.actions;
 export default sensorsSlice.reducer;

@@ -8,6 +8,7 @@ import {
   addSensor,
   deleteSensor,
   updateSensor,
+  setFilterSensor,
 } from "../../store/sensor/sensorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import getListColumnsExcludeId from "../../utils/GetColumnNamesExcludeId";
@@ -16,6 +17,7 @@ import "../../components/table/Table.css";
 import DeleteModal from "../../components/ui/DeleteModal";
 import TableRow from "../../components/table/TableRow";
 import TableRowAdd from "../../components/table/TableRowAdd";
+import SearchPanel from "../../components/searchPanel/SearchPanel";
 
 function Sensor() {
   const [show, setShow] = useState(false);
@@ -56,7 +58,7 @@ function Sensor() {
       const deleteResult = await dispatch(deleteSensor({ id }));
       if (deleteSensor.fulfilled.match(deleteResult)) {
         console.log("Sensor deleted successfully: ", deleteResult.payload);
-        dispatch(deleteItem({id: deleteResult.payload}));
+        dispatch(deleteItem(deleteResult.payload));
       } else {
         console.error("Error deleting sensor: ", deleteResult.payload);
       }
@@ -70,6 +72,11 @@ function Sensor() {
     setActiveId(activeId);
   };
 
+  const handleSearchForm = (data) => {
+    console.log(data);
+    dispatch(setFilterSensor(data));
+  }
+
   const handleCloseModal = () => setShow(false);
   const handleShowModal = () => setShow(true);
 
@@ -79,6 +86,9 @@ function Sensor() {
 
   return (
     <>
+      <div className="container">
+        <SearchPanel onSubmit={handleSearchForm} />
+      </div>
       <div className="container table_wrapper">
         <table className="main_table">
           <thead>
