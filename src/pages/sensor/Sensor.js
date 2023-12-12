@@ -13,6 +13,7 @@ import {
 } from "../../store/sensor/sensorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import getListColumnsExcludeId from "../../utils/GetColumnNamesExcludeId";
+import ExtractUniqueValuesForSensor from "../../utils/ExtractUniqueValuesForSensor";
 import "./Sensor.css";
 import "../../components/table/Table.css";
 import DeleteModal from "../../components/ui/DeleteModal";
@@ -25,7 +26,9 @@ function Sensor() {
   const [activeId, setActiveId] = useState("");
   const dispatch = useDispatch();
   const listSensors = useSelector(selectAllSensors);
-  const columns = listSensors.length > 0 ? getListColumnsExcludeId(listSensors[0]) : [];
+  const columns =
+    listSensors.length > 0 ? getListColumnsExcludeId(listSensors[0]) : [];
+  const SelectValues = ExtractUniqueValuesForSensor(listSensors);
   const listFilterSensors = useSelector(selectFilterSensors);
 
   const handleAdd = async (sensor) => {
@@ -33,7 +36,7 @@ function Sensor() {
       const addResult = await dispatch(addSensor(sensor));
       if (addSensor.fulfilled.match(addResult)) {
         console.log("Sensor added successfully: ", addResult.payload);
-        dispatch(addToList({sensor: addResult.payload}));
+        dispatch(addToList({ sensor: addResult.payload }));
       } else {
         console.error("Error adding sensor: ", addResult.payload);
       }
@@ -46,7 +49,7 @@ function Sensor() {
       const updateResult = await dispatch(updateSensor(sensor));
       if (updateSensor.fulfilled.match(updateResult)) {
         console.log("Sensor updated successfully: ", updateResult.payload);
-        dispatch(updateList({sensor: updateResult.payload}));
+        dispatch(updateList({ sensor: updateResult.payload }));
       } else {
         console.error("Error updating sensor: ", updateResult.payload);
       }
@@ -75,8 +78,9 @@ function Sensor() {
   };
 
   const handleSearchForm = (data) => {
+    console.log(data);
     dispatch(setFilterSensor(data));
-  }
+  };
 
   const handleCloseModal = () => setShow(false);
   const handleShowModal = () => setShow(true);
@@ -90,7 +94,12 @@ function Sensor() {
   return (
     <>
       <div className="container">
-        <SearchPanel onSubmit={handleSearchForm} />
+        <SearchPanel
+          typeList={SelectValues.typeList}
+          factoryList={SelectValues.factoryList}
+          tankList={SelectValues.tankList}
+          onSubmit={handleSearchForm}
+        />
       </div>
       <div className="container table_wrapper">
         <table className="main_table">
