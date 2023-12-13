@@ -1,6 +1,7 @@
 /**
  * Fitler an list of objects based on the provided filter object.
- * check for keys matching; check for value of each keys matching (case-insensitive)
+ * - if the filter object is empty, return the initial list
+ * - check for keys matching; check for value of each keys matching (case-insensitive).
  * @param {initialList} The initial object list.
  * @param {filterObject} The object to filter the array.
  * @return {filteredList} The filtered array of initial list.

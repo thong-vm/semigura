@@ -20,6 +20,8 @@ import DeleteModal from "../../components/ui/DeleteModal";
 import TableRow from "../../components/table/TableRow";
 import TableRowAdd from "../../components/table/TableRowAdd";
 import SearchPanel from "../../components/searchPanel/SearchPanel";
+import TableRowNoData from "../../components/table/TableRowNoData";
+import TableHead from "../../components/table/TableHead";
 
 function Sensor() {
   const [show, setShow] = useState(false);
@@ -89,8 +91,6 @@ function Sensor() {
     dispatch(fetchSensors());
   }, [dispatch]);
 
-  const Sensors = listFilterSensors.length > 0 ? listFilterSensors : listSensors;
-
   return (
     <>
       <div className="container">
@@ -103,27 +103,25 @@ function Sensor() {
       </div>
       <div className="container table_wrapper">
         <table className="main_table">
-          <thead>
-            <tr>
-              <th>No.</th>
-              {columns.map((column, index) => (
-                <th key={index}>{column.toUpperCase()}</th>
-              ))}
-              <th>Actions</th>
-            </tr>
-          </thead>
+          <TableHead columns={columns}/>
           <tbody>
-            {Sensors.map((dataRow, rowIndex) => (
-              <TableRow
-                key={dataRow.id}
-                index={rowIndex}
-                columns={columns}
-                data={dataRow}
-                handleUpdateOnBlur={handleUpdate}
-                handleClickDelete={handleClickDelete}
-              />
-            ))}
-            <TableRowAdd columns={columns} onClickAdd={handleAdd} />
+            {listFilterSensors.length === 0 ? (
+              <TableRowNoData colSpan={columns.length + 2} />
+            ) : (
+              <>
+                {listFilterSensors.map((dataRow, rowIndex) => (
+                  <TableRow
+                    key={dataRow.id}
+                    index={rowIndex}
+                    columns={columns}
+                    data={dataRow}
+                    handleUpdateOnBlur={handleUpdate}
+                    handleClickDelete={handleClickDelete}
+                  />
+                ))}
+                <TableRowAdd columns={columns} onClickAdd={handleAdd} />
+              </>
+            )}
           </tbody>
         </table>
       </div>
