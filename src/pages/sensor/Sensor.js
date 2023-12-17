@@ -22,6 +22,8 @@ import TableRowAdd from "../../components/table/TableRowAdd";
 import SearchPanel from "../../components/searchPanel/SearchPanel";
 import TableRowNoData from "../../components/table/TableRowNoData";
 import TableHead from "../../components/table/TableHead";
+import SeachPanelAutoComplete from "../../components/searchPanel/SeachPanelAutoComplete";
+import CustomizedHook from "../../components/searchPanel/AutoCompleteHook";
 
 function Sensor() {
   const [show, setShow] = useState(false);
@@ -80,7 +82,7 @@ function Sensor() {
   };
 
   const handleSearchForm = (data) => {
-    console.log(data);
+    // console.log(data);
     dispatch(setFilterSensor(data));
   };
 
@@ -93,15 +95,17 @@ function Sensor() {
 
   return (
     <>
-      <div className="container">
-        <SearchPanel
+      <div className="container mt-5">
+        {/* <SearchPanel
           typeList={SelectValues.typeList}
           factoryList={SelectValues.factoryList}
           tankList={SelectValues.tankList}
           onSubmit={handleSearchForm}
-        />
+        /> */}
+        <SeachPanelAutoComplete data={listSensors} />
+        <CustomizedHook />
       </div>
-      <div className="container table_wrapper">
+      <div className="container table_wrapper mt-4">
         <table className="main_table">
           <TableHead columns={columns}/>
           <tbody>
