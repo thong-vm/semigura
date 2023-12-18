@@ -9,6 +9,7 @@ const BASE_URL = "http://localhost:8000/sensors";
 const initialState = {
   sensors: [],
   filterSensor: {},
+  searchFields: [],
   status: IDLE,
   error: "",
 };
@@ -96,6 +97,10 @@ const sensorsSlice = createSlice({
       var sensor = action.payload;
       state.filterSensor = sensor;
     },
+    setSearchFields: (state, action) => {
+      var searchFields = action.payload;
+      state.searchFields = searchFields;
+    }
   },
   extraReducers(builder) {
     builder
@@ -116,7 +121,15 @@ export const selectAllSensors = (state) => state.sensors.sensors;
 export const selectFilterSensors = (state) => {
   return FilterObjectList(state.sensors.sensors, state.sensors.filterSensor);
 };
+export const selectSearchSensors = (state) => {
+  return state.sensors.sensors.filter(dataItem => {
+    return state.sensors.searchFields.some(searchField => {
+      const { group, value } = searchField;
+      return dataItem[group] === value;
+    });
+  });
+}
 
-export const { setList, addToList, updateList, deleteItem, setFilterSensor } =
+export const { setList, addToList, updateList, deleteItem, setFilterSensor, setSearchFields } =
   sensorsSlice.actions;
 export default sensorsSlice.reducer;

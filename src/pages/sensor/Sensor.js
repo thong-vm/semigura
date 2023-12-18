@@ -9,7 +9,9 @@ import {
   deleteSensor,
   updateSensor,
   setFilterSensor,
+  setSearchFields,
   selectFilterSensors,
+  selectSearchSensors,
 } from "../../store/sensor/sensorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import getListColumnsExcludeId from "../../utils/GetColumnNamesExcludeId";
@@ -32,8 +34,10 @@ function Sensor() {
   const listSensors = useSelector(selectAllSensors);
   const columns =
     listSensors.length > 0 ? getListColumnsExcludeId(listSensors[0]) : [];
-  const SelectValues = ExtractUniqueValuesForSensor(listSensors);
+  const SelectOptions = ExtractUniqueValuesForSensor(listSensors);
   const listFilterSensors = useSelector(selectFilterSensors);
+  const listSearchSensors = useSelector(selectSearchSensors);
+  console.log('listSearchSensors ', listSearchSensors);
 
   const handleAdd = async (sensor) => {
     try {
@@ -82,12 +86,16 @@ function Sensor() {
   };
 
   const handleSearchForm = (data) => {
-    // console.log(data);
     dispatch(setFilterSensor(data));
   };
+  const handleAutocompleteSearch = (data) => {
+    console.log('test> ', data);
+    dispatch(setSearchFields(data));
+  }
 
   const handleCloseModal = () => setShow(false);
   const handleShowModal = () => setShow(true);
+  const CustomAutocompleteSearch = CustomizedHook(listSensors, handleAutocompleteSearch);
 
   useEffect(() => {
     dispatch(fetchSensors());
@@ -96,24 +104,17 @@ function Sensor() {
   return (
     <>
       <div className="container mt-5">
-        {/* <SearchPanel
-          typeList={SelectValues.typeList}
-          factoryList={SelectValues.factoryList}
-          tankList={SelectValues.tankList}
-          onSubmit={handleSearchForm}
-        /> */}
-        <SeachPanelAutoComplete data={listSensors} />
-        <CustomizedHook />
+        {CustomAutocompleteSearch}
       </div>
       <div className="container table_wrapper mt-4">
         <table className="main_table">
           <TableHead columns={columns}/>
           <tbody>
-            {listFilterSensors.length === 0 ? (
+            {listSearchSensors.length === 0 ? (
               <TableRowNoData colSpan={columns.length + 2} />
             ) : (
               <>
-                {listFilterSensors.map((dataRow, rowIndex) => (
+                {listSearchSensors.map((dataRow, rowIndex) => (
                   <TableRow
                     key={dataRow.id}
                     index={rowIndex}
