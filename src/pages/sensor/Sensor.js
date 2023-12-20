@@ -12,6 +12,7 @@ import {
   setSearchFields,
   selectFilterSensors,
   selectSearchSensors,
+  selectSearchFields,
 } from "../../store/sensor/sensorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import getListColumnsExcludeId from "../../utils/GetColumnNamesExcludeId";
@@ -25,7 +26,7 @@ import SearchPanel from "../../components/searchPanel/SearchPanel";
 import TableRowNoData from "../../components/table/TableRowNoData";
 import TableHead from "../../components/table/TableHead";
 import SeachPanelAutoComplete from "../../components/searchPanel/SeachPanelAutoComplete";
-import CustomizedHook from "../../components/searchPanel/AutoCompleteHook";
+import AutoCompleteHook from "../../components/searchPanel/AutoCompleteHook";
 
 function Sensor() {
   const [show, setShow] = useState(false);
@@ -34,10 +35,8 @@ function Sensor() {
   const listSensors = useSelector(selectAllSensors);
   const columns =
     listSensors.length > 0 ? getListColumnsExcludeId(listSensors[0]) : [];
-  const SelectOptions = ExtractUniqueValuesForSensor(listSensors);
-  const listFilterSensors = useSelector(selectFilterSensors);
   const listSearchSensors = useSelector(selectSearchSensors);
-  console.log('listSearchSensors ', listSearchSensors);
+  const isSearchFieldEmpty = useSelector(selectSearchFields)?.length === 0;
 
   const handleAdd = async (sensor) => {
     try {
@@ -88,14 +87,18 @@ function Sensor() {
   const handleSearchForm = (data) => {
     dispatch(setFilterSensor(data));
   };
+
   const handleAutocompleteSearch = (data) => {
-    console.log('test> ', data);
     dispatch(setSearchFields(data));
-  }
+  };
 
   const handleCloseModal = () => setShow(false);
   const handleShowModal = () => setShow(true);
-  const CustomAutocompleteSearch = CustomizedHook(listSensors, handleAutocompleteSearch);
+  
+  const CustomAutocompleteSearch = AutoCompleteHook(
+    listSensors,
+    handleAutocompleteSearch
+  );
 
   useEffect(() => {
     dispatch(fetchSensors());
@@ -103,14 +106,26 @@ function Sensor() {
 
   return (
     <>
-      <div className="container mt-5">
-        {CustomAutocompleteSearch}
-      </div>
+      <div className="container mt-5">{CustomAutocompleteSearch}</div>
       <div className="container table_wrapper mt-4">
         <table className="main_table">
-          <TableHead columns={columns}/>
+          <TableHead columns={columns} />
           <tbody>
-            {listSearchSensors.length === 0 ? (
+            {isSearchFieldEmpty ? (
+              <>
+                {listSensors.map((dataRow, rowIndex) => (
+                  <TableRow
+                    key={dataRow.id}
+                    index={rowIndex}
+                    columns={columns}
+                    data={dataRow}
+                    handleUpdateOnBlur={handleUpdate}
+                    handleClickDelete={handleClickDelete}
+                  />
+                ))}
+                <TableRowAdd columns={columns} onClickAdd={handleAdd} />
+              </>
+            ) : listSearchSensors.length === 0 ? (
               <TableRowNoData colSpan={columns.length + 2} />
             ) : (
               <>

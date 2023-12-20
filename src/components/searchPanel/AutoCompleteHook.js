@@ -5,8 +5,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
 import { autocompleteClasses } from "@mui/material/Autocomplete";
-import Typography from '@mui/material/Typography';
-
+import Typography from "@mui/material/Typography";
 function Tag(props) {
   const { label, onDelete, ...other } = props;
   return (
@@ -22,8 +21,8 @@ Tag.propTypes = {
   onDelete: PropTypes.func.isRequired,
 };
 
-export default function CustomizedHook( data, onValueChange ) {
-  const options = arrangeOptions(data);
+export default function AutoCompleteHook(data, onValueChange) {
+  const options = getOptions(data);
 
   const {
     getRootProps,
@@ -40,12 +39,13 @@ export default function CustomizedHook( data, onValueChange ) {
     id: "customized-hook-demo",
     defaultValue: [],
     multiple: true,
-    options: optionsList, //.sort((a, b) => -b.group.localeCompare(a.group)),
+    options: options,
     getOptionLabel: (option) => option.value,
     onChange: (event, newValue) => onValueChange(newValue),
+    isOptionEqualToValue: (option, value) => {
+      return option.group === value.group && option.value === value.value;
+    },
   });
-  console.log("options: ", groupedOptions);
-  console.log("value : ", value);
 
   return (
     <Root>
@@ -69,35 +69,12 @@ export default function CustomizedHook( data, onValueChange ) {
             </li>
           ))}
         </Listbox>
-      )
-      // <Listbox {...getListboxProps()}>
-      //   {groupedOptions.map((group, groupIndex) => (
-      //     <React.Fragment key={groupIndex}>
-      //       <li className="group-label">{group.group}</li>
-      //       {group.options.map((option, optionIndex) => {
-      //         // log check getOptionProps
-      //         // const optionProps = getOptionProps({ option, index: `${groupIndex}-${optionIndex}` });
-      //         const optionProps = getOptionProps({ option, index: optionIndex });
-      //         console.log(`#${groupIndex}-${optionIndex} getOptionProps `, optionProps);
-      //         return (
-      //           <li
-      //             key={`${groupIndex}-${optionIndex}`}
-      //             {...optionProps}
-      //           >
-      //             <span>{option.value}</span>
-      //             <CheckIcon fontSize="small" />
-      //           </li>
-      //         );
-      //       })}
-      //     </React.Fragment>
-      //   ))}
-      // </Listbox>) 
-      : null}
+      ) : null}
     </Root>
   );
 }
 
-function arrangeOptions(data){
+function getOptions(data) {
   const uniqueOptionsMap = new Map();
 
   data?.forEach((obj) => {
@@ -113,199 +90,8 @@ function arrangeOptions(data){
     });
   });
 
-  return Array.from(uniqueOptionsMap.values());
+  return Array.from(uniqueOptionsMap.values()).sort((a, b) => -b.group.localeCompare(a.group));
 }
-
-const optionsList = [
-  {
-    group: "code",
-    value: "1749876016",
-  },
-  {
-    group: "code",
-    value: "3984725190",
-  },
-  {
-    group: "code",
-    value: "6538172945",
-  },
-  {
-    group: "code",
-    value: "7192836450",
-  },
-  {
-    group: "code",
-    value: "5678901234",
-  },
-  {
-    group: "code",
-    value: "1234567890",
-  },
-  {
-    group: "code",
-    value: "0987654321",
-  },
-  {
-    group: "code",
-    value: "5432109876",
-  },
-  {
-    group: "code",
-    value: "1357924680",
-  },
-  {
-    group: "code",
-    value: "2468013579",
-  },
-  {
-    group: "code",
-    value: "9876543210",
-  },
-  {
-    group: "code",
-    value: "0123456789",
-  },
-  {
-    group: "code",
-    value: "9870123456",
-  },
-  {
-    group: "factory",
-    value: "FACTORY-HLHC",
-  },
-  {
-    group: "factory",
-    value: "FACTORY-ABCD",
-  },
-  {
-    group: "factory",
-    value: "FACTORY-EFGH",
-  },
-  {
-    group: "factory",
-    value: "FACTORY-UVWX",
-  },
-  {
-    group: "factory",
-    value: "FACTORY-QRST",
-  },
-  {
-    group: "factory",
-    value: "FACTORY-IJKL",
-  },
-  {
-    group: "factory",
-    value: "FACTORY-WXYZ",
-  },
-  {
-    group: "name",
-    value: "NAME-QXTT",
-  },
-  {
-    group: "name",
-    value: "NAME-WXYZ",
-  },
-  {
-    group: "name",
-    value: "NAME-UVWX",
-  },
-  {
-    group: "name",
-    value: "NAME-ABCD",
-  },
-  {
-    group: "name",
-    value: "NAME-EFGH",
-  },
-  {
-    group: "name",
-    value: "NAME-1234",
-  },
-  {
-    group: "name",
-    value: "NAME-IJKL",
-  },
-  {
-    group: "name",
-    value: "NAME-QRST",
-  },
-  {
-    group: "name",
-    value: "NAME-PQRS",
-  },
-  {
-    group: "name",
-    value: "NAME-5678",
-  },
-  {
-    group: "tank",
-    value: "TANK-SXCV",
-  },
-  {
-    group: "tank",
-    value: "LOT-T316",
-  },
-  {
-    group: "tank",
-    value: "LOCATION-P12",
-  },
-  {
-    group: "tank",
-    value: "TANK-IJKL",
-  },
-  {
-    group: "tank",
-    value: "TANK-5678",
-  },
-  {
-    group: "tank",
-    value: "LOT-T123",
-  },
-  {
-    group: "tank",
-    value: "LOCATION-P34",
-  },
-  {
-    group: "tank",
-    value: "TANK-ABCD",
-  },
-  {
-    group: "tank",
-    value: "LOT-T456",
-  },
-  {
-    group: "tank",
-    value: "LOCATION-P56",
-  },
-  {
-    group: "tank",
-    value: "TANK-7890",
-  },
-  {
-    group: "tank",
-    value: "TANK-1234",
-  },
-  {
-    group: "tank",
-    value: "LOT-T789",
-  },
-  {
-    group: "type",
-    value: "2",
-  },
-  {
-    group: "type",
-    value: "1",
-  },
-  {
-    group: "type",
-    value: "4",
-  },
-  {
-    group: "type",
-    value: "3",
-  },
-];
 
 const Root = styled("div")(
   ({ theme }) => `

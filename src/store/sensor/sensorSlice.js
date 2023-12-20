@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createSelector } from "@reduxjs/toolkit";
 import axios from "axios";
 import Sensor from "../../pages/sensor/Sensor";
 import { FAILED, IDLE, LOADING, SUCCEEDED } from "../../constants/store";
@@ -100,7 +101,7 @@ const sensorsSlice = createSlice({
     setSearchFields: (state, action) => {
       var searchFields = action.payload;
       state.searchFields = searchFields;
-    }
+    },
   },
   extraReducers(builder) {
     builder
@@ -118,18 +119,29 @@ const sensorsSlice = createSlice({
   },
 });
 export const selectAllSensors = (state) => state.sensors.sensors;
+export const selectSearchFields = (state) => state.sensors.searchFields;
 export const selectFilterSensors = (state) => {
   return FilterObjectList(state.sensors.sensors, state.sensors.filterSensor);
 };
-export const selectSearchSensors = (state) => {
-  return state.sensors.sensors.filter(dataItem => {
-    return state.sensors.searchFields.some(searchField => {
-      const { group, value } = searchField;
-      return dataItem[group] === value;
+export const selectSearchSensors = createSelector(
+  [selectAllSensors, selectSearchFields],
+  (sensors, searchFields) => {
+    return sensors.filter((dataItem) => {
+      return searchFields.some((searchField) => {
+        const { group, value } = searchField;
+        return dataItem[group] == value;
+      });
     });
-  });
-}
+  }
+);
 
-export const { setList, addToList, updateList, deleteItem, setFilterSensor, setSearchFields } =
-  sensorsSlice.actions;
+
+export const {
+  setList,
+  addToList,
+  updateList,
+  deleteItem,
+  setFilterSensor,
+  setSearchFields,
+} = sensorsSlice.actions;
 export default sensorsSlice.reducer;
