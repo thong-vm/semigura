@@ -63,7 +63,7 @@ export default function AutoCompleteHook(data, onValueChange) {
       {groupedOptions.length > 0 ? (
         <Listbox {...getListboxProps()}>
           {groupedOptions.map((option, index) => (
-            <li {...getOptionProps({ option, index })}>
+            <li {...getOptionProps({ option, index })} key={index}>
               <span>{option.value}</span>
               <CheckIcon fontSize="small" />
             </li>
